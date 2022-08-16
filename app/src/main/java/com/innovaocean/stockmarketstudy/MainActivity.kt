@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.innovaocean.stockmarketstudy.presentation.companyListings.NavGraphs
 import com.innovaocean.stockmarketstudy.ui.StockMarketAppTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
             StockMarketAppTheme {
                 Surface(modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.background){
-                   // DestinationsNavHost(navGraph = NavGraphs.root)
+                    DestinationsNavHost(navGraph = NavGraphs.root)
                 }
             }
         }
