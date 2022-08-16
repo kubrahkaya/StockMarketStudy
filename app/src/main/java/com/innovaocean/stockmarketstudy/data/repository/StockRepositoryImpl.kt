@@ -1,7 +1,7 @@
 package com.innovaocean.stockmarketstudy.data.repository
 
 import com.innovaocean.stockmarketstudy.data.csv.CSVParser
-import com.innovaocean.stockmarketstudy.data.local.StockDatabase
+import com.innovaocean.stockmarketstudy.data.local.StockDao
 import com.innovaocean.stockmarketstudy.data.mapper.toCompanyListing
 import com.innovaocean.stockmarketstudy.data.mapper.toCompanyListingEntity
 import com.innovaocean.stockmarketstudy.data.remote.StockApi
@@ -12,16 +12,12 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class StockRepositoryImpl @Inject constructor(
     private val api: StockApi,
-    private val db: StockDatabase,
+    private val dao: StockDao,
     private val companyListingsParser: CSVParser<CompanyListing>,
 ) : StockRepository {
-
-    private val dao = db.dao
 
     override suspend fun getCompanyListings(
         fetchFromRemote: Boolean, query: String
