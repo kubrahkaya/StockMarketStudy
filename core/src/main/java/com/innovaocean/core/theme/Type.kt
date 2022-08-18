@@ -1,4 +1,4 @@
-package com.innovaocean.stockmarketstudy.ui
+package com.innovaocean.core.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

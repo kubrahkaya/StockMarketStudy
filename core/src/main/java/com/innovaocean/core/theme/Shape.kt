@@ -1,4 +1,4 @@
-package com.innovaocean.stockmarketstudy.ui
+package com.innovaocean.core.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
