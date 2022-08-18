@@ -1,5 +1,6 @@
 package com.innovaocean.stockmarketstudy.presentation.companyListings
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material.Divider
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.innovaocean.stockmarketstudy.presentation.destinations.DetailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -46,6 +48,11 @@ fun CompanyListingsScreen(
                     CompanyItem(
                         company = company, modifier = Modifier
                             .fillMaxWidth()
+                            .clickable {
+                                navigator.navigate(
+                                    DetailScreenDestination()
+                                )
+                            }
                             .padding(16.dp)
                     )
                     if (index < state.companies.size) {
