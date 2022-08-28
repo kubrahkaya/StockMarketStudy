@@ -34,4 +34,5 @@ object Versions {
     const val roomVersion = "2.4.2"
     const val glance = "1.0.0-alpha01"
     const val ramVersion = "1.6.14-beta"
+    const val lifeCycleVersion= "2.6.0-alpha01"
 }

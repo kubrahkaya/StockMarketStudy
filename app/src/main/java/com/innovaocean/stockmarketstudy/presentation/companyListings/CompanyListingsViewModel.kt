@@ -1,16 +1,20 @@
 package com.innovaocean.stockmarketstudy.presentation.companyListings
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.innovaocean.stockmarketstudy.data.repository.StockRepository
-import com.innovaocean.stockmarketstudy.util.Resource
+import com.innovaocean.stockmarketstudy.domain.model.CompanyListing
+import com.innovaocean.stockmarketstudy.util.Result
+import com.innovaocean.stockmarketstudy.util.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,47 +23,48 @@ class CompanyListingsViewModel @Inject constructor(
     private val repository: StockRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(CompanyListingsState())
-
     private var searchJob: Job? = null
 
+    private val companies: Flow<Result<List<CompanyListing>>> = getCompanyLists().asResult()
 
-    init {
-        getCompanyListings()
+    val uiState: StateFlow<CompanyListUiState> = combine(
+        companies
+    ) { companiesResult ->
+        when (companiesResult[0]) {
+            is Result.Success -> {
+                val companiesList = companiesResult[0] as Result.Success
+                CompanyListUiState.Loaded(
+                    companies = companiesList.data
+                )
+            }
+            is Result.Error -> CompanyListUiState.Error
+            Result.Loading -> {
+                CompanyListUiState.Loading
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = CompanyListUiState.Loading
+    )
+
+    fun onRefresh() {
+        getCompanyLists(fetchFromRemote = true)
     }
 
-    private fun getCompanyListings(
-        query: String = state.searchQuery.lowercase(), fetchFromRemote: Boolean = false
-    ) {
-        viewModelScope.launch {
-            repository.getCompanyListings(fetchFromRemote, query).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let {
-                            state = state.copy(companies = it)
-                        }
-                    }
-                    is Resource.Error -> Unit
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = result.isLoading)
-                    }
-                }
-            }
+    fun onSearchQueryChanged(query: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(500L)
+            getCompanyLists(query = query)
         }
     }
 
-    fun onEvent(event: CompanyListingsEvent) {
-        when (event) {
-            is CompanyListingsEvent.Refresh -> getCompanyListings(fetchFromRemote = true)
-            is CompanyListingsEvent.OnSearchQueryChanged -> {
-                state = state.copy(searchQuery = event.query)
-                searchJob?.cancel()
-                searchJob = viewModelScope.launch {
-                    delay(500L)
-                    getCompanyListings()
-                }
-            }
-        }
-    }
+    private fun getCompanyLists(
+        query: String = "", fetchFromRemote: Boolean = false
+    ) = repository.getCompanyListings(fetchFromRemote, query)
+        .catch {
+        //todo
+         }
 
 }

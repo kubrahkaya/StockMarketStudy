@@ -47,6 +47,19 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs =
+            listOf(
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
+                "-Xopt-in=androidx.compose.ui.unit.ExperimentalUnitApi",
+                "-Xopt-in=kotlin.RequiresOptIn",
+                "-Xopt-in=kotlin.contracts.ExperimentalContracts",
+                "-Xopt-in=androidx.compose.ui.test.ExperimentalTestApi",
+                "-Xopt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi",
+            )
     }
 
     composeOptions {
@@ -86,7 +99,6 @@ dependencies {
     implementation(Dependencies.composeAnimation)
     implementation(Dependencies.composeTooling)
     implementation(Dependencies.composeActivity)
-    implementation(Dependencies.composeViewModel)
     implementation(Dependencies.composeLiveData)
     implementation(Dependencies.composeConstraintLayout)
     implementation(Dependencies.composeNavigation)
@@ -95,6 +107,9 @@ dependencies {
     implementation(Dependencies.roomKtx)
     implementation(Dependencies.glance)
     implementation(Dependencies.csv)
+    implementation(Dependencies.lifeCycleViewModelKtx)
+    implementation(Dependencies.lifeCycleViewModelCompose)
+    implementation(Dependencies.lifeCycleRuntimeCompose)
 
     kapt(Dependencies.daggerHiltCompiler)
     kapt(Dependencies.moshiCodegen)

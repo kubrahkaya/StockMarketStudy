@@ -2,9 +2,9 @@ package com.innovaocean.stockmarketstudy.presentation.companyListings
 
 import com.innovaocean.stockmarketstudy.domain.model.CompanyListing
 
-data class CompanyListingsState(
-    val companies: List<CompanyListing> = emptyList(),
-    val isLoading: Boolean = false,
-    val isRefreshing: Boolean = false,
-    val searchQuery: String = ""
-)
+sealed interface CompanyListUiState {
+    object Loading: CompanyListUiState
+    object Empty: CompanyListUiState
+    object Error: CompanyListUiState
+    data class Loaded(val companies: List<CompanyListing>) : CompanyListUiState
+}

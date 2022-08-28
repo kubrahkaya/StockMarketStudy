@@ -30,6 +30,9 @@ android {
 
 dependencies {
     implementation(Dependencies.composeMaterial)
+    implementation(Dependencies.lifeCycleViewModelKtx)
+    implementation(Dependencies.lifeCycleViewModelCompose)
+    implementation(Dependencies.lifeCycleRuntimeCompose)
 
     testImplementation(Dependencies.junit4)
     testImplementation(Dependencies.junitExtensionsKtx)

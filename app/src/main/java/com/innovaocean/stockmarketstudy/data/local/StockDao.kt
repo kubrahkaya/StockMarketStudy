@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StockDao {
@@ -24,5 +25,5 @@ interface StockDao {
                 UPPER(:query) == symbol
         """
     )
-    suspend fun searchCompanyListing(query: String): List<CompanyListingEntity>
+    fun searchCompanyListing(query: String): Flow<List<CompanyListingEntity>>
 }

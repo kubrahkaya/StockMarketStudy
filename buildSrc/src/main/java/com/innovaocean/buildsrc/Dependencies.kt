@@ -38,8 +38,7 @@ object Dependencies {
     const val composeTooling = "androidx.compose.ui:ui-tooling:${Versions.composeVersion}"
     const val composeActivity =
         "androidx.activity:activity-compose:${Versions.composeActivityVersion}"
-    const val composeViewModel =
-        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModelVersion}"
+
     const val composeLiveData =
         "androidx.compose.runtime:runtime-livedata:${Versions.composeVersion}"
     const val composeUiTest = "androidx.compose.ui:ui-test-junit4:${Versions.composeVersion}"
@@ -59,5 +58,9 @@ object Dependencies {
     const val composeDestinationsCore = "io.github.raamcosta.compose-destinations:core:${Versions.ramVersion}"
     const val composeDestinationsKsp = "io.github.raamcosta.compose-destinations:ksp:${Versions.ramVersion}"
     const val csv = "com.opencsv:opencsv:5.5.2"
+
+    const val lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifeCycleVersion}"
+    const val lifeCycleViewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifeCycleVersion}"
+    const val lifeCycleRuntimeCompose = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifeCycleVersion}"
 
 }

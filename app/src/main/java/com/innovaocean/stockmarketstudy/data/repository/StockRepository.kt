@@ -1,13 +1,12 @@
 package com.innovaocean.stockmarketstudy.data.repository
 
 import com.innovaocean.stockmarketstudy.domain.model.CompanyListing
-import com.innovaocean.stockmarketstudy.util.Resource
 import kotlinx.coroutines.flow.Flow
 
-interface StockRepository {
+interface StockRepository  {
 
-    suspend fun getCompanyListings(
+     fun getCompanyListings(
         fetchFromRemote: Boolean, query: String
-    ): Flow<Resource<List<CompanyListing>>>
+    ): Flow<List<CompanyListing>>
 
 }

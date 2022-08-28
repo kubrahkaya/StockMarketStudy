@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">StockMarketStudy</string>
+  <string name="try_again">Try Again</string>
+  <string name="empty_company_list">No companies available</string>
 </resources>

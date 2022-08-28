@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.sp
 fun CompanyItem(
     company: CompanyListing, modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier, verticalAlignment = Alignment.CenterVertically
     ) {
