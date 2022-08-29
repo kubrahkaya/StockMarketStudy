@@ -7,10 +7,12 @@ import com.innovaocean.stockmarketstudy.data.mapper.toCompanyListing
 import com.innovaocean.stockmarketstudy.data.mapper.toCompanyListingEntity
 import com.innovaocean.stockmarketstudy.data.remote.StockApi
 import com.innovaocean.stockmarketstudy.domain.model.CompanyListing
+import com.innovaocean.stockmarketstudy.util.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import retrofit2.HttpException
-import java.io.IOException
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class StockRepositoryImpl @Inject constructor(
@@ -21,24 +23,28 @@ class StockRepositoryImpl @Inject constructor(
 
     override fun getCompanyListings(
         fetchFromRemote: Boolean, query: String
-    ): Flow<List<CompanyListing>> {
-        return dao.searchCompanyListing(query)
-            .map { it.map(CompanyListingEntity::toCompanyListing) }
+    ): Flow<Result<List<CompanyListing>>> = flow {
+        try {
+            val response = api.getListings()
+            val companyData = companyListingsParser.parse(response.byteStream()).take(10)
+            synchronize(companyData)
+            emit(Result.Success(companyData))
+        } catch (e: Exception) {
+            dao.searchCompanyListing(query).map {
+                Result.Success(
+                    it.map(
+                        CompanyListingEntity::toCompanyListing
+                    )
+                )
+            }
+        }
     }
 
-    private suspend fun synchronize() {
-        val companyData = try {
-            val response = api.getListings()
-            companyListingsParser.parse(response.byteStream())
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        } catch (e: HttpException) {
-            e.printStackTrace()
-            null
+    private suspend fun synchronize(data: List<CompanyListing>) {
+        withContext(Dispatchers.IO) {
+            dao.clearCompanyListings()
+            val values = data.map { it.toCompanyListingEntity() }
+            dao.insertCompanyListings(values)
         }
-
-        dao.clearCompanyListings()
-        dao.insertCompanyListings(companyData!!.map { it.toCompanyListingEntity() })
     }
 }

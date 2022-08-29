@@ -25,7 +25,7 @@ class CompanyListingsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private val companies: Flow<Result<List<CompanyListing>>> = getCompanyLists().asResult()
+    private val companies: Flow<Result<List<CompanyListing>>> = getCompanyLists()
 
     val uiState: StateFlow<CompanyListUiState> = combine(
         companies
@@ -62,9 +62,10 @@ class CompanyListingsViewModel @Inject constructor(
 
     private fun getCompanyLists(
         query: String = "", fetchFromRemote: Boolean = false
-    ) = repository.getCompanyListings(fetchFromRemote, query)
-        .catch {
-        //todo
-         }
-
+    ): Flow<Result<List<CompanyListing>>> {
+       return repository.getCompanyListings(fetchFromRemote, query)
+            .catch {
+                //todo
+            }
+    }
 }
