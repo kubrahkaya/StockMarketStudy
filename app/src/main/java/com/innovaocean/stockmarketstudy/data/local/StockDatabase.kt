@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [CompanyListingEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class StockDatabase: RoomDatabase() {
     abstract fun dao(): StockDao

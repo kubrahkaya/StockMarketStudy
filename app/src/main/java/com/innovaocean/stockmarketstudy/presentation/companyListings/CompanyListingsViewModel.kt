@@ -12,7 +12,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class CompanyListingsViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    private val companies: Flow<Result<List<CompanyListing>>> = getCompanyLists()
+    private val companies: Flow<Result<List<CompanyListing>>> = getCompanyLists().asResult()
 
     val uiState: StateFlow<CompanyListUiState> = combine(
         companies
@@ -62,10 +61,7 @@ class CompanyListingsViewModel @Inject constructor(
 
     private fun getCompanyLists(
         query: String = "", fetchFromRemote: Boolean = false
-    ): Flow<Result<List<CompanyListing>>> {
+    ): Flow<List<CompanyListing>> {
        return repository.getCompanyListings(fetchFromRemote, query)
-            .catch {
-                //todo
-            }
     }
 }

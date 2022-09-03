@@ -25,5 +25,5 @@ interface StockDao {
                 UPPER(:query) == symbol
         """
     )
-    fun searchCompanyListing(query: String): Flow<List<CompanyListingEntity>>
+    fun searchCompanyListing(query: String): Flow<List<CompanyListingEntity>>?
 }
